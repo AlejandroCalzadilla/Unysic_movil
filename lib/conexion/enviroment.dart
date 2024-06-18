@@ -1,3 +1,3 @@
 class Enviroment{
- static const String  api= "http://192.168.1.3:8080/";
+ static const String  api= "http://18.218.118.43/";
 }

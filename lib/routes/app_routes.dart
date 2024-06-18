@@ -2,7 +2,7 @@
 import 'package:apinestjs/screens/asistencia_screen.dart';
 import 'package:apinestjs/screens/auth/login.dart';
 import 'package:apinestjs/botones_reusables/mensaje404.dart';
-import 'package:apinestjs/home.dart';
+import 'package:apinestjs/screens/home.dart';
 import 'package:apinestjs/screens/horarios_screen.dart';
 import 'package:apinestjs/usuario_index.dart';
 import 'package:flutter/material.dart';

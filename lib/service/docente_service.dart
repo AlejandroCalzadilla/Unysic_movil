@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:apinestjs/conexion/enviroment.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -38,7 +40,7 @@ class DocenteService {
 
 
   Future<bool> postNumberAndString(int number, String text) async {
-    final String url = '${Enviroment.api}login'; // Reemplaza con tu URL
+    const String url = '${Enviroment.api}login'; // Reemplaza con tu URL
     final uri = Uri.parse(url);
     final token = await storage.read(key: 'jwt');
     final Map<String, dynamic> body = {
@@ -58,7 +60,7 @@ class DocenteService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       // Maneja la respuesta exitosa
-      print('Success: $data');
+      //print('Success: $data');
       return true; // Indica que la autenticación fue exitosa
     } else {
       // Maneja los errores
@@ -66,6 +68,87 @@ class DocenteService {
       return false; // Indica que hubo un error en la autenticación
     }
   }
+
+
+   Future<http.Response> createAsistencia(String hora, String estado, String fecha, int grupoId, double latitud, double longitud) async {
+  var queryParams = {
+    'latitud': latitud.toString(),
+    'longitud': longitud.toString(),
+  };
+   
+   print('$latitud $longitud  esto esta mandando');
+
+   const String url = '${Enviroment.api}login';
+  var uri = Uri.http('18.218.118.43', '/api/asistencias', queryParams); // Reemplaza con la URL de tu servidor
+    final token = await storage.read(key: 'jwt');
+  //final uri = Uri.parse(url);
+  return http.post(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8','Authorization': 'Bearer $token',
+
+    },
+    body: jsonEncode(<String, dynamic>{
+      'hora': hora,
+      'estado': estado,
+      'fecha': fecha,
+      'grupo': {
+        'id': grupoId
+      },
+    }),
+  );
+}
+
+   
+
+
+ Future<http.Response> licencia(String hora, String estado, String fecha, int grupoId) async {
+    const String url = '${Enviroment.api}api/asistencias/registrar'; // Reemplaza con tu URL
+    final uri = Uri.parse(url);
+    final token = await storage.read(key: 'jwt');
+    /* final Map<String, dynamic> body = {
+     
+    }; */
+
+    return  await http.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+      'hora': hora,
+      'estado': estado,
+      'fecha': fecha,
+      'grupo': {
+        'id': grupoId
+      },
+    }),
+    );
+
+    
+  }  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /*  Future<void> fetchData() async {
     final token = await tokenService.getToken();
     if (token != null) {
